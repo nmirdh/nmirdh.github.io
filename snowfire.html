@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>💥妖怪的专属烟花🎆</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <link rel="shortcut icon" type="image/png"
+        href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/firework-burst-icon-v2.png">
+    <link rel="icon" type="image/png"
+        href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/firework-burst-icon-v2.png">
+    <link rel="apple-touch-icon-precomposed"
+        href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/firework-burst-icon-v2.png">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-TileImage"
+        content="https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/firework-burst-icon-v2.png">
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        .canvas-container {
+            background-size: cover;
+            background-position: center;
+        }
+
+        body {
+            transform-origin: center center;
+            transition: transform 0.5s;
+        }
+
+        .landscape {
+            transform: rotate(-90deg) translateX(-100%);
+            width: 100vh;
+            height: 100vw;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: fixed;
+            top: 100%;
+            left: 0;
+        }
+    </style>
+    <script src="./js/jquery.min.js" type="text/javascript"></script>
+    <script>
+        var firstClick = true;
+        var currentAudioId = 1;
+
+        function bodyPlayMusic() {
+            if (firstClick) {
+                firstClick = false;
+                var randomAudioId = Math.floor(Math.random() * 5) + 1; // 随机选择音乐ID（1到5）
+                currentAudioId = randomAudioId;
+                musicPlay(randomAudioId, true); // 播放随机选择的音乐
+            }
+        };
+
+        function musicPlay(id, isPlay) {
+            var media = document.querySelector('#audioDom' + id);
+            if (isPlay && media.paused) {
+                media.volume = 0.5; // 设置音量为0.5
+                media.play();
+            }
+            if (!isPlay && !media.paused) {
+                media.pause();
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <!-- clickMusic()点击音乐 -->
+    <img id="music_ico" onclick="bodyPlayMusic()" alt="" style="display: inline; float: right;">
+
+    <!-- 多个音乐播放器 -->
+    <audio id="audioDom1" src="./music/China-E.m4a" preload="auto" onended="playRandomMusic()"></audio>
+    <audio id="audioDom2" src="./music/china-p.m4a" preload="auto" onended="playRandomMusic()"></audio>
+    <audio id="audioDom3" src="./music/春风十里报新年.mp3" preload="auto" onended="playRandomMusic()"></audio>
+    <audio id="audioDom4" src="./music//桃花朵朵开-阿牛.mp3" preload="auto" onended="playRandomMusic()"></audio>
+    <audio id="audioDom5" src="./music/红红的年 - 支爽@传齐.mp3" preload="auto" onended="playRandomMusic()"></audio>
+    <!-- 您可以继续添加更多的音乐播放器 -->
+
+    <div id="yhBtn"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; font-size: 15px;">
+        <p>💥点火</p>
+        <img style="width: 84px; margin-bottom: 24px;"
+            src="https://p9.toutiaoimg.com/img/tos-cn-i-qvj2lq49k0/060990dac854444ab7a927b5b3311fe4~tplv-tt-shrink:640:0.image">
+
+    </div>
+
+    <!-- App -->
+    <div class="container">
+        <div class="loading-init">
+            <div class="loading-init__header"></div>
+            <div class="loading-init__status"></div>
+        </div>
+        <div class="stage-container remove">
+            <div class="page_two hide">
+                <div class="type_words" id="contents"></div>
+            </div>
+            <div class="canvas-container">
+                <canvas id="trails-canvas"></canvas>
+                <canvas id="main-canvas"></canvas>
+                <canvas id="snow-canvas" style="opacity: 0.5;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- partial -->
+    <script type="text/javascript" src="./js/common.js"></script>
+    <script type="text/javascript" src="./js/script.js"></script>
+    <script type="text/javascript">
+        function playRandomMusic() {
+            var randomAudioId = Math.floor(Math.random() * 5) + 1; // 随机选择音乐ID（1到5）
+            currentAudioId = randomAudioId;
+            musicPlay(randomAudioId.toString(), true); // 播放随机选择的音乐
+        }
+
+        $('#yhBtn').click(e => {
+            $('#yhBtn').hide()
+            setTimeout(() => {
+                start()
+                fireworks();
+            }, 3800) // 这里的5000 是5s指烟花延时时间
+            setTimeout(() => {
+                function audioAutoPlay() {
+                    var randomAudioId = Math.floor(Math.random() * 5) + 1; // 随机选择音乐ID（1到5）
+                    currentAudioId = randomAudioId;
+                    musicPlay(randomAudioId.toString(), true); // 播放随机选择的音乐
+                }
+
+                audioAutoPlay();
+                // wishFun(); 想要展示祝福语--取消注释
+            }, 2000) // 这里的5000 是5s指音乐延时时间
+            console.log(updateConfig({
+                autoLaunch: true
+            }));
+        })
+
+        function fireworks() {
+            $('.page_two').removeClass('hide');
+        }
+
+        function start() {
+            var text = [
+                'ʸᵒᵘ ᵃʳᵉ ᵗʰᵉ ᵒⁿˡʸ ᵇᵉˢᵗ ᶠᵒʳ ᵐᵉ.',
+                "于我而言，你是永远的『妖怪』❤️",
+                "要做就要做一只好妖怪",
+                "臭是臭了点，但是没关系",
+                "你知道吗，今年已经是我们认识的第6个『春节』了🧧",
+                "下面请欣赏为你准备已久的『烟花』🎇",
+                "烟花易逝,人情长存",
+                "新年快乐🎆 ᵕ̈ ²⁰²⁴",
+                "🧨🧨🧨"
+            ];
+            var str = text.join('<br><br>');
+            var str_ = '';
+            var i = 0;
+            var content = document.getElementById('contents');
+            var timer = setInterval(() => {
+                if (str_.length < str.length) {
+                    str_ += str[i++];
+                    content.innerHTML = '<p>' + str_ + '<span class="xx" style="opacity: 1;color: red;">❤︎</span></p>'; // 打印时加光标
+                } else {
+                    clearInterval(timer);
+                    setTimeout(() => {
+                        content.style.opacity = "0";
+                        content.style.transition = "opacity 3s";
+                    }, 30000); // 延迟30秒后隐藏文字
+                }
+            }, 150);
+        }
+    </script>
+    <script type="text/javascript" src="./js/other.js"></script>
+    <script type="text/javascript" src="./js/snow.js"></script>
+    <script>
+        window.addEventListener("orientationchange", function () {
+            if (window.orientation == 90 || window.orientation == -90) {
+                document.body.classList.add('landscape');
+            } else {
+                document.body.classList.remove('landscape');
+            }
+        }, false);
+    </script>
+</body>
+
+</html>
